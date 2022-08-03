@@ -7,11 +7,11 @@ import { RecipesList } from "../../components/RecipesList";
 import { RecipesContainer, SearchInput } from "./styles";
 
 const ITENS_PER_PAGE = 12;
+const TOTAL_API_LIMIT = 903;
 
 export function Recipes() {
   const [recipes, setRecipes] = useState([]);
 
-  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -35,7 +35,6 @@ export function Recipes() {
     );
 
     setRecipes(response.data.results);
-    setTotalCount(response.data.totalResults);
   }
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export function Recipes() {
       <RecipesList recipes={recipes} />
       {recipes.length > 0 && (
         <Pagination
-          totalCountOfRegisters={totalCount}
+          totalCountOfRegisters={TOTAL_API_LIMIT}
           currentPage={currentPage}
           onPageChange={onPageChange}
           registerPerPage={ITENS_PER_PAGE}
