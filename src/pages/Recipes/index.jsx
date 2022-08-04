@@ -21,6 +21,8 @@ export function Recipes() {
 
   const debouncedSearch = useDebounce(search, 500);
 
+  const hasSearch = !!search.trim("");
+
   async function getRecipes() {
     const response = await axios.get(
       "https://api.spoonacular.com/recipes/complexSearch",
@@ -28,8 +30,8 @@ export function Recipes() {
         params: {
           query: search,
           apiKey: import.meta.env.VITE_API_KEY,
-          number: ITENS_PER_PAGE,
-          offset: ITENS_PER_PAGE * (currentPage - 1),
+          number: hasSearch ? 100 : ITENS_PER_PAGE,
+          offset: hasSearch ? 0 : ITENS_PER_PAGE * (currentPage - 1),
         },
       }
     );
@@ -63,7 +65,7 @@ export function Recipes() {
         type="search"
       />
       <RecipesList recipes={recipes} />
-      {recipes.length > 0 && (
+      {recipes.length > 0 && !hasSearch && (
         <Pagination
           totalCountOfRegisters={TOTAL_API_LIMIT}
           currentPage={currentPage}
